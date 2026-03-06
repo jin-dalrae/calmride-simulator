@@ -11,7 +11,7 @@ const AGENT_COLORS: Record<string, string> = {
 }
 
 export function AgentChatPanel() {
-    const { current, history, loading } = useExplanationStore()
+    const { current, history, loading, revealedMessages, consensusReached, setRevealedMessages, setConsensusReached } = useExplanationStore()
     const currentPersonality = usePromptStore(s => s.personality)
     const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -22,6 +22,25 @@ export function AgentChatPanel() {
     }, [current, history])
 
     const chatMessages = current?.agentConversation || []
+
+    useEffect(() => {
+        // If there's no chat, do nothing
+        if (!current || loading || chatMessages.length === 0) return
+
+        if (revealedMessages < chatMessages.length) {
+            const timer = setTimeout(() => {
+                setRevealedMessages(revealedMessages + 1)
+            }, 1500) // 1.5s delay between messages
+            return () => clearTimeout(timer)
+        } else if (revealedMessages === chatMessages.length && !consensusReached) {
+            const timer = setTimeout(() => {
+                setConsensusReached(true)
+            }, 1000) // 1s delay before consensus message pops
+            return () => clearTimeout(timer)
+        }
+    }, [current, loading, chatMessages.length, revealedMessages, consensusReached, setRevealedMessages, setConsensusReached])
+
+    const visibleMessages = chatMessages.slice(0, revealedMessages)
 
     return (
         <div style={{
@@ -64,7 +83,7 @@ export function AgentChatPanel() {
                     </div>
                 )}
 
-                {chatMessages.map((msg, i) => (
+                {visibleMessages.map((msg, i) => (
                     <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                         <span style={{
                             fontSize: 11,
@@ -89,7 +108,13 @@ export function AgentChatPanel() {
                     </div>
                 ))}
 
-                {chatMessages.length > 0 && (
+                {revealedMessages > 0 && !consensusReached && (
+                    <div style={{ color: '#9ca3af', fontSize: 13, fontStyle: 'italic', paddingLeft: 12 }}>
+                        Agents deliberating...
+                    </div>
+                )}
+
+                {consensusReached && (
                     <div style={{ marginTop: 8, borderTop: '1px solid #374151', paddingTop: 12 }}>
                         <span style={{ color: '#10b981', fontSize: 11, fontWeight: 'bold' }}>SYSTEM: Consensus reached. Proceeding to broadcast to passengers.</span>
                     </div>

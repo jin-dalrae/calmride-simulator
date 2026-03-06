@@ -5,13 +5,14 @@ const iconMap = { info: 'ℹ️', warning: '⚠️', safety: '🛡️', route: '
 export function FrontScreen() {
   const content = useExplanationStore(s => s.current?.frontScreen)
   const loading = useExplanationStore(s => s.loading)
+  const consensusReached = useExplanationStore(s => s.consensusReached)
 
   return (
     <div style={cardStyle}>
       <div style={headerStyle}>Front Screen</div>
       {loading ? (
         <div style={loadingStyle}>Generating...</div>
-      ) : content ? (
+      ) : content && consensusReached ? (
         <div style={contentStyle}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
             <span style={{ fontSize: 20 }}>{iconMap[content.icon]}</span>
@@ -24,9 +25,12 @@ export function FrontScreen() {
             </div>
           )}
         </div>
+      ) : content && !consensusReached ? (
+        <div style={loadingStyle}>Awaiting final consensus...</div>
       ) : (
         <div style={emptyStyle}>Waiting for incident...</div>
       )}
+
     </div>
   )
 }

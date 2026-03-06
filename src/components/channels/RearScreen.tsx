@@ -5,13 +5,14 @@ const iconMap = { info: 'ℹ️', warning: '⚠️', safety: '🛡️', route: '
 export function RearScreen() {
   const content = useExplanationStore(s => s.current?.rearScreen)
   const loading = useExplanationStore(s => s.loading)
+  const consensusReached = useExplanationStore(s => s.consensusReached)
 
   return (
     <div style={cardStyle}>
       <div style={headerStyle}>Rear Screen</div>
       {loading ? (
         <div style={loadingStyle}>Generating...</div>
-      ) : content ? (
+      ) : content && consensusReached ? (
         <div style={{ padding: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
             <span style={{ fontSize: 24 }}>{iconMap[content.icon]}</span>
@@ -19,6 +20,8 @@ export function RearScreen() {
           </div>
           <p style={{ fontSize: 15, color: '#d1d5db', lineHeight: 1.6, margin: 0 }}>{content.comfortNote}</p>
         </div>
+      ) : content && !consensusReached ? (
+        <div style={loadingStyle}>Awaiting final consensus...</div>
       ) : (
         <div style={emptyStyle}>Waiting for incident...</div>
       )}

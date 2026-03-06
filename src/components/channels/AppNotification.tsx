@@ -5,13 +5,14 @@ const priorityColors = { low: '#22c55e', medium: '#fbbf24', high: '#ef4444' }
 export function AppNotification() {
   const content = useExplanationStore(s => s.current?.appNotification)
   const loading = useExplanationStore(s => s.loading)
+  const consensusReached = useExplanationStore(s => s.consensusReached)
 
   return (
     <div style={cardStyle}>
       <div style={headerStyle}>App Push</div>
       {loading ? (
         <div style={loadingStyle}>Generating...</div>
-      ) : content ? (
+      ) : content && consensusReached ? (
         <div style={{ padding: 12 }}>
           {/* Mobile notification mockup */}
           <div style={{
@@ -33,6 +34,8 @@ export function AppNotification() {
             </div>
           </div>
         </div>
+      ) : content && !consensusReached ? (
+        <div style={loadingStyle}>Awaiting final consensus...</div>
       ) : (
         <div style={emptyStyle}>Waiting for incident...</div>
       )}

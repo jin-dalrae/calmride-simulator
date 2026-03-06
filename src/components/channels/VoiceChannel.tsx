@@ -6,10 +6,11 @@ const toneColors = { calm: '#22c55e', informative: '#3b82f6', urgent: '#ef4444' 
 export function VoiceChannel() {
   const content = useExplanationStore(s => s.current?.voice)
   const loading = useExplanationStore(s => s.loading)
+  const consensusReached = useExplanationStore(s => s.consensusReached)
   const [speaking, setSpeaking] = useState(false)
 
   const speak = useCallback(() => {
-    if (!content || speaking) return
+    if (!content || speaking || !consensusReached) return
     const utterance = new SpeechSynthesisUtterance(content.text)
     utterance.rate = content.tone === 'urgent' ? 1.1 : 0.9
     utterance.pitch = content.tone === 'calm' ? 0.9 : 1.0
@@ -17,7 +18,7 @@ export function VoiceChannel() {
     utterance.onerror = () => setSpeaking(false)
     setSpeaking(true)
     speechSynthesis.speak(utterance)
-  }, [content, speaking])
+  }, [content, speaking, consensusReached])
 
   const stop = useCallback(() => {
     speechSynthesis.cancel()
@@ -29,7 +30,7 @@ export function VoiceChannel() {
       <div style={headerStyle}>Voice</div>
       {loading ? (
         <div style={loadingStyle}>Generating...</div>
-      ) : content ? (
+      ) : content && consensusReached ? (
         <div style={{ padding: 12 }}>
           <div style={{
             background: '#374151', borderRadius: 12, padding: 12,
@@ -60,6 +61,8 @@ export function VoiceChannel() {
             </div>
           </div>
         </div>
+      ) : content && !consensusReached ? (
+        <div style={loadingStyle}>Awaiting final consensus...</div>
       ) : (
         <div style={emptyStyle}>Waiting for incident...</div>
       )}
