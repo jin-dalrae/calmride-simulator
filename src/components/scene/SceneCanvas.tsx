@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { MapControls, Sky, Environment } from '@react-three/drei'
+import { MapControls, Sky, Environment, ContactShadows } from '@react-three/drei'
 import { EgoVehicle } from './EgoVehicle'
 import { SurroundingAgent } from './SurroundingAgent'
 import { RoadMap } from './RoadMap'
@@ -39,7 +39,6 @@ function CameraFollower() {
     const state = interpolateAgent(ego.trajectory, time)
     if (!state.visible) return
 
-    // Resume auto-follow 3s after user stops interacting
     const timeSinceInteraction = Date.now() - lastInteraction.current
     if (userInteracting.current || timeSinceInteraction < 3000) return
 
@@ -47,7 +46,7 @@ function CameraFollower() {
     const egoZ = -state.y
 
     target.current.set(egoX, 0, egoZ)
-    const desiredPos = new THREE.Vector3(egoX, 60, egoZ)
+    const desiredPos = new THREE.Vector3(egoX, 55, egoZ)
 
     camera.position.lerp(desiredPos, 0.08)
     camera.lookAt(target.current)
@@ -69,40 +68,61 @@ export function SceneCanvas() {
   const currentTime = usePlaybackStore(s => s.currentTime)
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#e8edf2' }}>
+    <div style={{ width: '100%', height: '100%', background: '#dce3ea' }}>
       <Canvas
         shadows
-        camera={{ position: [0, 60, 0], fov: 40, near: 1, far: 2000 }}
+        camera={{ position: [0, 55, 0], fov: 45, near: 0.5, far: 2000 }}
         onCreated={({ gl, camera }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping
+          gl.toneMappingExposure = 1.1
           gl.outputColorSpace = THREE.SRGBColorSpace
           camera.lookAt(0, 0, 0)
         }}
       >
-        <color attach="background" args={['#e8edf2']} />
-        <fog attach="fog" args={['#e8edf2', 150, 800]} />
+        <color attach="background" args={['#b8c6d4']} />
+        <fog attach="fog" args={['#b8c6d4', 120, 500]} />
 
-        <Sky sunPosition={[100, 20, 100]} />
+        <Sky
+          sunPosition={[80, 40, 60]}
+          turbidity={6}
+          rayleigh={0.5}
+          mieCoefficient={0.005}
+          mieDirectionalG={0.8}
+        />
         <Environment preset="city" />
 
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.6} />
         <directionalLight
-          position={[100, 100, 50]}
-          intensity={1.5}
+          position={[80, 80, 40]}
+          intensity={2}
           castShadow
           shadow-mapSize={[2048, 2048]}
-          shadow-camera-left={-100}
-          shadow-camera-right={100}
-          shadow-camera-top={100}
-          shadow-camera-bottom={-100}
+          shadow-camera-left={-120}
+          shadow-camera-right={120}
+          shadow-camera-top={120}
+          shadow-camera-bottom={-120}
+          shadow-bias={-0.0001}
         />
+        <hemisphereLight args={['#b1c4d8', '#8a9a6a', 0.3]} />
 
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+        {/* Ground plane — grass/terrain */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} receiveShadow>
           <planeGeometry args={[2000, 2000]} />
-          <meshStandardMaterial color="#c8cdd2" roughness={0.8} metalness={0.1} />
+          <meshStandardMaterial color="#7a8a65" roughness={0.95} metalness={0} />
         </mesh>
 
-        <gridHelper args={[2000, 100, '#bbb', '#ccc']} position={[0, 0.01, 0]} />
+        {/* Subtle grid for spatial reference */}
+        <gridHelper args={[2000, 200, '#7f8f72', '#7f8f72']} position={[0, -0.01, 0]}>
+          <meshBasicMaterial transparent opacity={0.08} />
+        </gridHelper>
+
+        <ContactShadows
+          position={[0, 0, 0]}
+          opacity={0.3}
+          scale={200}
+          blur={2}
+          far={10}
+        />
 
         <CameraFollower />
 
