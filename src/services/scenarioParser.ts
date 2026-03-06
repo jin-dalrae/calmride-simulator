@@ -25,6 +25,7 @@ export function parseScenario(raw: WOMDRawScenario): ParsedScenario {
     qaPairs,
     incidents,
     mapFeatures,
+    trafficSignals: [],
   }
 }
 
