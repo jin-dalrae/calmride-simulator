@@ -18,12 +18,12 @@ export function SystemPromptEditor() {
 }
 
 const labelStyle: React.CSSProperties = {
-  fontSize: '9px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#444',
+  fontSize: '9px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#888',
   display: 'block', marginBottom: 8, fontWeight: 800, fontFamily: 'monospace'
 }
 const textareaStyle: React.CSSProperties = {
-  width: '100%', background: '#0a0a0a', color: '#888',
-  border: '1px solid #111', borderRadius: '2px', padding: 12, fontSize: '11px',
+  width: '100%', background: '#f8f9fa', color: '#555',
+  border: '1px solid #e0e0e0', borderRadius: '2px', padding: 12, fontSize: '11px',
   resize: 'vertical', fontFamily: 'monospace', lineHeight: 1.5,
   outline: 'none'
 }

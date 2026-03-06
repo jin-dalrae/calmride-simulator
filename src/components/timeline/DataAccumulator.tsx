@@ -2,10 +2,10 @@ import { useScenarioStore } from '../../store/useScenarioStore'
 import { usePlaybackStore } from '../../store/usePlaybackStore'
 
 const categoryColors: Record<string, string> = {
-  environment: '#4ade80',
-  ego: '#38bdf8',
-  surrounding: '#f97316',
-  interaction: '#c084fc',
+  environment: '#16a34a',
+  ego: '#0284c7',
+  surrounding: '#ea580c',
+  interaction: '#9333ea',
 }
 
 export function DataAccumulator() {
@@ -18,7 +18,7 @@ export function DataAccumulator() {
 
   return (
     <div style={{ flex: 1, overflowY: 'auto', padding: '0' }}>
-      <div style={{ fontSize: '9px', color: '#444', padding: '16px 16px 8px', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 800, fontFamily: 'monospace' }}>
+      <div style={{ fontSize: '9px', color: '#888', padding: '16px 16px 8px', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 800, fontFamily: 'monospace' }}>
         CONTEXT_BUFFER ({visiblePairs.length}/{scenario.qaPairs.length})
       </div>
       {visiblePairs.length === 0 ? (
@@ -27,8 +27,8 @@ export function DataAccumulator() {
         visiblePairs.map((qa, i) => (
           <div key={i} style={{
             padding: '12px 16px',
-            borderBottom: '1px solid #111',
-            background: 'rgba(0,0,0,0.2)',
+            borderBottom: '1px solid #e0e0e0',
+            background: 'rgba(0,0,0,0.01)',
             animation: 'fadeIn 0.3s ease',
           }}>
             <div style={{
@@ -45,8 +45,8 @@ export function DataAccumulator() {
             }}>
               {qa.category}
             </div>
-            <div style={{ fontSize: '12px', color: '#eee', marginBottom: 4, fontWeight: 700 }}>{qa.question}</div>
-            <div style={{ fontSize: '11px', color: '#666', lineHeight: 1.4 }}>{qa.answer}</div>
+            <div style={{ fontSize: '12px', color: '#222', marginBottom: 4, fontWeight: 700 }}>{qa.question}</div>
+            <div style={{ fontSize: '11px', color: '#777', lineHeight: 1.4 }}>{qa.answer}</div>
           </div>
         ))
       )}
@@ -55,5 +55,5 @@ export function DataAccumulator() {
 }
 
 const emptyStyle: React.CSSProperties = {
-  padding: 32, color: '#333', fontSize: 11, textAlign: 'center', fontFamily: 'monospace'
+  padding: 32, color: '#999', fontSize: 11, textAlign: 'center', fontFamily: 'monospace'
 }

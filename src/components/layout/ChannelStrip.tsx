@@ -10,7 +10,7 @@ export function ChannelStrip() {
       gridTemplateColumns: 'repeat(4, 1fr)',
       gap: 12,
       padding: 12,
-      background: '#050505',
+      background: '#ffffff',
       minHeight: 180,
     }}>
       <FrontScreen />

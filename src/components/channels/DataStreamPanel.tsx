@@ -25,7 +25,7 @@ export function DataStreamPanel() {
                 const state = interpolateAgent(agent.trajectory, currentTime)
                 if (!state.visible) return null
                 const dist = Math.sqrt(
-                    (state.x - ego.state.x) ** 2 + 
+                    (state.x - ego.state.x) ** 2 +
                     (state.y - ego.state.y) ** 2
                 )
                 if (dist > 100) return null
@@ -39,20 +39,20 @@ export function DataStreamPanel() {
     return (
         <div style={{
             flex: 1,
-            background: '#050505',
+            background: '#ffffff',
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
             fontFamily: 'monospace',
             fontSize: '11px',
-            color: '#34d399',
+            color: '#059669',
             overflow: 'hidden'
         }}>
             <div style={{
                 padding: '20px 16px',
-                borderBottom: '1px solid #111',
-                background: '#080808',
-                color: '#f3f4f6',
+                borderBottom: '1px solid #e0e0e0',
+                background: '#fafafa',
+                color: '#111',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
@@ -70,40 +70,40 @@ export function DataStreamPanel() {
 
             <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
                 <div style={{ marginBottom: '24px' }}>
-                    <div style={{ color: '#444', marginBottom: '10px', fontWeight: 'bold' }}>[GLOBAL_STATE]</div>
-                    <div style={{ color: '#ccc' }}>TIME: <span style={{ color: '#34d399' }}>{currentTime.toFixed(3)}s</span></div>
-                    <div style={{ color: '#ccc' }}>SCENARIO: <span style={{ color: '#34d399' }}>{currentScenario?.id || 'IDLE'}</span></div>
-                    <div style={{ color: '#ccc' }}>LATENCY: <span style={{ color: '#34d399' }}>0.012ms</span></div>
-                    <div style={{ color: '#ccc' }}>SAMPLING: <span style={{ color: '#34d399' }}>10HZ_WOMD</span></div>
+                    <div style={{ color: '#888', marginBottom: '10px', fontWeight: 'bold' }}>[GLOBAL_STATE]</div>
+                    <div style={{ color: '#444' }}>TIME: <span style={{ color: '#059669' }}>{currentTime.toFixed(3)}s</span></div>
+                    <div style={{ color: '#444' }}>SCENARIO: <span style={{ color: '#059669' }}>{currentScenario?.id || 'IDLE'}</span></div>
+                    <div style={{ color: '#444' }}>LATENCY: <span style={{ color: '#059669' }}>0.012ms</span></div>
+                    <div style={{ color: '#444' }}>SAMPLING: <span style={{ color: '#059669' }}>10HZ_WOMD</span></div>
                 </div>
 
                 {ego && (
                     <div style={{ marginBottom: '24px' }}>
-                        <div style={{ color: '#0ea5e9', marginBottom: '10px', fontWeight: 'bold' }}>[EGO_UNIT_TELEM]</div>
+                        <div style={{ color: '#0284c7', marginBottom: '10px', fontWeight: 'bold' }}>[EGO_UNIT_TELEM]</div>
                         <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: '6px' }}>
-                            <span style={{ color: '#666' }}>COORD_X:</span> <span style={{ color: '#eee' }}>{ego.state.x.toFixed(4)}</span>
-                            <span style={{ color: '#666' }}>COORD_Y:</span> <span style={{ color: '#eee' }}>{ego.state.y.toFixed(4)}</span>
-                            <span style={{ color: '#666' }}>VELOCITY:</span> <span style={{ color: '#eee' }}>{ego.state.speed.toFixed(3)} m/s</span>
-                            <span style={{ color: '#666' }}>HEADING:</span> <span style={{ color: '#eee' }}>{(ego.state.heading * (180 / Math.PI)).toFixed(3)}°</span>
-                            <span style={{ color: '#666' }}>ACCEL_Z:</span> <span style={{ color: Math.abs(ego.state.speed) > 0.1 ? '#34d399' : '#666' }}>{((ego.agent.trajectory.find(p => Math.abs(p.t - currentTime) < 0.15)?.accel || 0)).toFixed(3)} m/s²</span>
+                            <span style={{ color: '#888' }}>COORD_X:</span> <span style={{ color: '#222' }}>{ego.state.x.toFixed(4)}</span>
+                            <span style={{ color: '#888' }}>COORD_Y:</span> <span style={{ color: '#222' }}>{ego.state.y.toFixed(4)}</span>
+                            <span style={{ color: '#888' }}>VELOCITY:</span> <span style={{ color: '#222' }}>{ego.state.speed.toFixed(3)} m/s</span>
+                            <span style={{ color: '#888' }}>HEADING:</span> <span style={{ color: '#222' }}>{(ego.state.heading * (180 / Math.PI)).toFixed(3)}&deg;</span>
+                            <span style={{ color: '#888' }}>ACCEL_Z:</span> <span style={{ color: Math.abs(ego.state.speed) > 0.1 ? '#059669' : '#888' }}>{((ego.agent.trajectory.find(p => Math.abs(p.t - currentTime) < 0.15)?.accel || 0)).toFixed(3)} m/s&sup2;</span>
                         </div>
                     </div>
                 )}
 
                 <div>
-                    <div style={{ color: '#666', marginBottom: '10px', fontWeight: 'bold' }}>[PROXIMITY_DETECTION]</div>
+                    <div style={{ color: '#888', marginBottom: '10px', fontWeight: 'bold' }}>[PROXIMITY_DETECTION]</div>
                     {surrounding.length === 0 ? (
-                        <div style={{ color: '#222', fontStyle: 'italic' }}>SCANNING...</div>
+                        <div style={{ color: '#ccc', fontStyle: 'italic' }}>SCANNING...</div>
                     ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                             {surrounding.map(obj => (
-                                <div key={obj.agent.id} style={{ borderLeft: '1px solid #111', paddingLeft: '10px' }}>
-                                    <div style={{ color: '#eee', display: 'flex', justifyContent: 'space-between', fontSize: '10px' }}>
+                                <div key={obj.agent.id} style={{ borderLeft: '1px solid #e0e0e0', paddingLeft: '10px' }}>
+                                    <div style={{ color: '#222', display: 'flex', justifyContent: 'space-between', fontSize: '10px' }}>
                                         <span>{obj.agent.type.toUpperCase()}_{obj.agent.id.slice(0,4)}</span>
-                                        <span style={{ color: '#fbbf24' }}>{obj.dist.toFixed(2)}m</span>
+                                        <span style={{ color: '#d97706' }}>{obj.dist.toFixed(2)}m</span>
                                     </div>
-                                    <div style={{ color: '#444', fontSize: '9px', marginTop: 2 }}>
-                                        VEL: {obj.state.speed.toFixed(2)}m/s | HDG: {(obj.state.heading * (180 / Math.PI)).toFixed(1)}°
+                                    <div style={{ color: '#888', fontSize: '9px', marginTop: 2 }}>
+                                        VEL: {obj.state.speed.toFixed(2)}m/s | HDG: {(obj.state.heading * (180 / Math.PI)).toFixed(1)}&deg;
                                     </div>
                                 </div>
                             ))}
@@ -114,10 +114,10 @@ export function DataStreamPanel() {
 
             <div style={{
                 padding: '12px 16px',
-                borderTop: '1px solid #111',
-                background: '#080808',
+                borderTop: '1px solid #e0e0e0',
+                background: '#fafafa',
                 fontSize: '9px',
-                color: '#222',
+                color: '#bbb',
                 letterSpacing: 0.5
             }}>
                 WAYMO_WORLD_MODEL_V2_TELEMETRY
@@ -136,11 +136,11 @@ export function DataStreamPanel() {
                     background: transparent;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: #111;
+                    background: #ccc;
                     border-radius: 2px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: #222;
+                    background: #aaa;
                 }
             `}</style>
         </div>

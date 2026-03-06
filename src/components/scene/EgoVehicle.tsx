@@ -24,7 +24,7 @@ export function EgoVehicle({ agent, time }: Props) {
     }
     groupRef.current.visible = true
     groupRef.current.position.set(current.x, 0, -current.y)
-    groupRef.current.rotation.set(0, -current.heading + Math.PI / 2, 0)
+    groupRef.current.rotation.set(0, current.heading + Math.PI / 2, 0)
   })
 
   const width = agent.width || 2.0

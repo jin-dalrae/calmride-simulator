@@ -19,11 +19,11 @@ export function TimelineBar() {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: 16, padding: '12px 20px',
-      background: 'rgba(8, 8, 8, 0.9)', 
+      background: 'rgba(255, 255, 255, 0.92)',
       backdropFilter: 'blur(20px)',
-      border: '1px solid #111',
+      border: '1px solid #ddd',
       borderRadius: '8px',
-      boxShadow: '0 4px 24px rgba(0,0,0,0.5)'
+      boxShadow: '0 4px 24px rgba(0,0,0,0.08)'
     }}>
       <button onClick={togglePlay} style={btnStyle}>
         {isPlaying ? '⏸' : '▶'}
@@ -38,13 +38,13 @@ export function TimelineBar() {
           value={currentTime}
           onChange={e => seek(parseFloat(e.target.value))}
           className="timeline-slider"
-          style={{ 
-            width: '100%', 
+          style={{
+            width: '100%',
             cursor: 'pointer',
             height: '4px',
             borderRadius: '2px',
             appearance: 'none',
-            background: '#111'
+            background: '#e0e0e0'
           }}
         />
         {incidents.map(inc => (
@@ -56,20 +56,20 @@ export function TimelineBar() {
               top: '50%',
               width: 6, height: 6,
               borderRadius: '50%',
-              background: inc.severity === 'high' ? '#f87171' : '#fbbf24',
+              background: inc.severity === 'high' ? '#dc2626' : '#d97706',
               transform: 'translate(-3px, -3px)',
               pointerEvents: 'none',
-              boxShadow: `0 0 10px ${inc.severity === 'high' ? '#f87171' : '#fbbf24'}`
+              boxShadow: `0 0 10px ${inc.severity === 'high' ? '#dc2626' : '#d97706'}`
             }}
           />
         ))}
       </div>
 
-      <span style={{ 
-        fontFamily: 'monospace', 
-        fontSize: '11px', 
-        color: '#34d399', 
-        minWidth: 90, 
+      <span style={{
+        fontFamily: 'monospace',
+        fontSize: '11px',
+        color: '#059669',
+        minWidth: 90,
         textAlign: 'right',
         letterSpacing: '1px'
       }}>
@@ -78,12 +78,12 @@ export function TimelineBar() {
 
       <div style={{ display: 'flex', gap: 4 }}>
         {[0.5, 1, 2].map(s => (
-            <button 
-                key={s} 
+            <button
+                key={s}
                 onClick={() => setSpeed(s)}
                 style={{
-                    background: speed === s ? '#222' : 'transparent',
-                    color: speed === s ? '#38bdf8' : '#444',
+                    background: speed === s ? '#e8e8e8' : 'transparent',
+                    color: speed === s ? '#0284c7' : '#aaa',
                     border: 'none',
                     fontSize: '10px',
                     fontWeight: 800,
@@ -103,9 +103,9 @@ export function TimelineBar() {
             appearance: none;
             width: 12px;
             height: 12px;
-            background: #38bdf8;
+            background: #0284c7;
             border-radius: 50%;
-            box-shadow: 0 0 10px #38bdf8;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
         }
       `}</style>
     </div>
@@ -114,8 +114,8 @@ export function TimelineBar() {
 
 const btnStyle: React.CSSProperties = {
   background: 'transparent',
-  color: '#38bdf8',
-  border: '1px solid #38bdf8',
+  color: '#0284c7',
+  border: '1px solid #0284c7',
   borderRadius: '4px',
   width: 32, height: 32,
   fontSize: 14,

@@ -9,7 +9,7 @@ export function Sidebar() {
   return (
     <div style={{
       width: 280,
-      background: '#050505',
+      background: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
@@ -19,17 +19,17 @@ export function Sidebar() {
         padding: '24px 16px 16px',
         fontSize: 14,
         fontWeight: 800,
-        color: '#f3f4f6',
+        color: '#111',
         letterSpacing: '2px',
         textTransform: 'uppercase',
-        borderBottom: '1px solid #111',
-        background: '#080808'
+        borderBottom: '1px solid #e0e0e0',
+        background: '#fafafa'
       }}>
         CALMRIDE_SIM
       </div>
 
-      <div className="custom-scrollbar" style={{ 
-        flex: 1, 
+      <div className="custom-scrollbar" style={{
+        flex: 1,
         overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -38,7 +38,7 @@ export function Sidebar() {
       }}>
         <ScenarioPicker />
 
-        <div style={{ borderTop: '1px solid #111', paddingTop: 20 }}>
+        <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: 20 }}>
           <PersonalitySelector />
         </div>
 
@@ -50,17 +50,17 @@ export function Sidebar() {
           <RegenerateButton />
         </div>
 
-        <div style={{ borderTop: '1px solid #111', minHeight: 180, flex: '0 0 auto' }}>
+        <div style={{ borderTop: '1px solid #e0e0e0', minHeight: 180, flex: '0 0 auto' }}>
           <DataAccumulator />
         </div>
       </div>
 
-      <div style={{ 
-        padding: '12px 16px', 
-        fontSize: '9px', 
-        color: '#222', 
-        borderTop: '1px solid #111',
-        fontFamily: 'monospace' 
+      <div style={{
+        padding: '12px 16px',
+        fontSize: '9px',
+        color: '#bbb',
+        borderTop: '1px solid #e0e0e0',
+        fontFamily: 'monospace'
       }}>
         CORE_ENGINE_V1.2.4
       </div>

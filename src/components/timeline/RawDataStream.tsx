@@ -20,8 +20,8 @@ export function RawDataStream() {
 
     return (
         <div style={{
-            background: '#0f172a',
-            color: '#34d399',
+            background: '#f8f9fa',
+            color: '#059669',
             fontFamily: 'monospace',
             fontSize: 10,
             padding: 12,
@@ -30,13 +30,13 @@ export function RawDataStream() {
             gap: 8,
             height: '100%',
             overflowY: 'auto',
-            borderTop: '1px solid #1e293b'
+            borderTop: '1px solid #e0e0e0'
         }}>
-            <div style={{ color: '#64748b', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: 4 }}>
+            <div style={{ color: '#888', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: 4 }}>
                 Real-World Data Stream (Waymax / WOMD)
             </div>
 
-            <div style={{ borderBottom: '1px solid #1e293b', paddingBottom: 4 }}>
+            <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: 4 }}>
                 SYSTEM_TIME: {currentTime.toFixed(2)}s
                 <br />
                 SCENARIO_ID: {currentScenario?.id || '---'}
@@ -45,7 +45,7 @@ export function RawDataStream() {
             </div>
 
             {egoState && (
-                <div style={{ color: '#60a5fa' }}>
+                <div style={{ color: '#0284c7' }}>
                     EGO_VEHICLE_LOG:
                     <br />
                     - X_POS: {egoState.x.toFixed(3)}
@@ -54,9 +54,9 @@ export function RawDataStream() {
                     <br />
                     - SPEED: {egoState.speed.toFixed(2)} m/s
                     <br />
-                    - ACCEL: {egoState.accel.toFixed(2)} m/s²
+                    - ACCEL: {egoState.accel.toFixed(2)} m/s&sup2;
                     <br />
-                    - HEADING: {(egoState.heading * (180 / Math.PI)).toFixed(1)}°
+                    - HEADING: {(egoState.heading * (180 / Math.PI)).toFixed(1)}&deg;
                 </div>
             )}
 
@@ -66,7 +66,7 @@ export function RawDataStream() {
                     {activeAgents.slice(1, 4).map(agent => {
                         const state = agent.trajectory.find(p => Math.abs(p.t - currentTime) < 0.1)
                         return (
-                            <div key={agent.id} style={{ marginLeft: 8, marginTop: 4, color: '#94a3b8' }}>
+                            <div key={agent.id} style={{ marginLeft: 8, marginTop: 4, color: '#777' }}>
                                 ID: {agent.id} ({agent.type})
                                 <br />
                                 DIST_TO_EGO: {egoState ? Math.sqrt(Math.pow(state!.x - egoState.x, 2) + Math.pow(state!.y - egoState.y, 2)).toFixed(2) : '---'}m
@@ -77,7 +77,7 @@ export function RawDataStream() {
             )}
 
             {!currentScenario && (
-                <div style={{ color: '#444', animation: 'pulse 2s infinite' }}>
+                <div style={{ color: '#bbb', animation: 'pulse 2s infinite' }}>
                     [WAITING_FOR_DATA_PACKET...]
                 </div>
             )}

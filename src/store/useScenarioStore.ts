@@ -1,7 +1,5 @@
 import { create } from 'zustand'
-import type { ParsedScenario, Incident, IncidentType } from '../types/scenario'
-import type { WOMDRawScenario } from '../types/womd'
-import { parseScenario } from '../services/scenarioParser'
+import type { ParsedScenario, IncidentType } from '../types/scenario'
 import {
   isBackendAvailable,
   fetchScenarioList,
@@ -19,14 +17,8 @@ interface ScenarioState {
   backendConnected: boolean
   waymaxAvailable: boolean
   loadScenarioList: () => Promise<void>
-  loadScenario: (idOrFilename: string) => Promise<void>
+  loadScenario: (id: string) => Promise<void>
 }
-
-const SAMPLE_FILES = [
-  'scenario-intersection-stop.json',
-  'scenario-highway-lanechange.json',
-  'scenario-pedestrian-crossing.json',
-]
 
 /**
  * Convert a backend scenario response into the frontend ParsedScenario type.
@@ -68,8 +60,8 @@ function backendToFrontend(backend: BackendScenario): ParsedScenario {
   }
 }
 
-export const useScenarioStore = create<ScenarioState>((set, get) => ({
-  availableScenarios: SAMPLE_FILES,
+export const useScenarioStore = create<ScenarioState>((set) => ({
+  availableScenarios: [],
   scenarioSummaries: [],
   currentScenario: null,
   loading: false,
@@ -78,7 +70,6 @@ export const useScenarioStore = create<ScenarioState>((set, get) => ({
   waymaxAvailable: false,
 
   loadScenarioList: async () => {
-    // Try backend first
     try {
       const backendUp = await isBackendAvailable()
       if (backendUp) {
@@ -91,34 +82,23 @@ export const useScenarioStore = create<ScenarioState>((set, get) => ({
         return
       }
     } catch {
-      // Backend not available — fall back
+      // Backend not available
     }
 
     set({
       backendConnected: false,
-      availableScenarios: SAMPLE_FILES,
+      availableScenarios: [],
+      error: 'Backend not connected. Start the backend server to load real WOMD data.',
     })
   },
 
-  loadScenario: async (idOrFilename: string) => {
+  loadScenario: async (id: string) => {
     set({ loading: true, error: null })
 
-    const { backendConnected } = get()
-
     try {
-      if (backendConnected) {
-        // Load from backend API
-        const backend = await fetchScenario(idOrFilename)
-        const parsed = backendToFrontend(backend)
-        set({ currentScenario: parsed, loading: false })
-      } else {
-        // Fallback: load from local sample files
-        const response = await fetch(`/sample-scenarios/${idOrFilename}`)
-        if (!response.ok) throw new Error(`Failed to load ${idOrFilename}`)
-        const raw: WOMDRawScenario = await response.json()
-        const parsed = parseScenario(raw)
-        set({ currentScenario: parsed, loading: false })
-      }
+      const backend = await fetchScenario(id)
+      const parsed = backendToFrontend(backend)
+      set({ currentScenario: parsed, loading: false })
     } catch (err) {
       set({ error: (err as Error).message, loading: false })
     }

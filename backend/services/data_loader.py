@@ -89,9 +89,7 @@ SAMPLE_DIR = (
 
 
 def initialize() -> None:
-    """Build the scenario index at startup."""
-    _load_sample_scenarios()
-
+    """Build the scenario index at startup from real WOMD data only."""
     if _ensure_waymax() and WOMD_DATA_DIR.exists():
         _load_waymax_scenarios()
     elif _ensure_waymax() and not WOMD_DATA_DIR.exists():
@@ -99,6 +97,8 @@ def initialize() -> None:
             f"Waymax is installed but WOMD data directory not found at {WOMD_DATA_DIR}. "
             f"Set WOMD_DATA_DIR env var to point to your dataset."
         )
+    else:
+        logger.warning("Waymax not available. No scenarios loaded.")
 
     logger.info(f"Indexed {len(_scenario_index)} scenarios total")
 
@@ -616,10 +616,10 @@ def _extract_waymax_traffic_lights(state) -> list[TrafficSignalModel]:
 
 from models import IncidentModel
 
-HARD_BRAKE_THRESHOLD = 8.5
-HEADING_CHANGE_THRESHOLD = 0.45
+HARD_BRAKE_THRESHOLD = 1.5
+HEADING_CHANGE_THRESHOLD = 0.06
 STOP_SPEED_THRESHOLD = 0.5
-MIN_SPEED_FOR_BRAKE = 4.0
+MIN_SPEED_FOR_BRAKE = 1.5
 
 
 def _classify_incidents_simple(

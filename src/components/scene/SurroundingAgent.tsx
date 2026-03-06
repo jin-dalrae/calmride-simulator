@@ -30,7 +30,7 @@ export function SurroundingAgent({ agent, time }: Props) {
     }
     groupRef.current.visible = true
     groupRef.current.position.set(state.x, 0, -state.y)
-    groupRef.current.rotation.set(0, -state.heading + Math.PI / 2, 0)
+    groupRef.current.rotation.set(0, state.heading + Math.PI / 2, 0)
   })
 
   return (

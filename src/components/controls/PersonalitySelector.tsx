@@ -25,10 +25,10 @@ export function PersonalitySelector() {
               fontSize: '10px',
               fontWeight: 700,
               fontFamily: 'monospace',
-              border: personality === p.value ? '1px solid #38bdf8' : '1px solid #111',
+              border: personality === p.value ? '1px solid #0284c7' : '1px solid #e0e0e0',
               borderRadius: '2px',
-              background: personality === p.value ? 'rgba(56, 189, 248, 0.05)' : '#0a0a0a',
-              color: personality === p.value ? '#38bdf8' : '#444',
+              background: personality === p.value ? 'rgba(2, 132, 199, 0.08)' : '#f8f9fa',
+              color: personality === p.value ? '#0284c7' : '#888',
               cursor: 'pointer',
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
@@ -43,6 +43,6 @@ export function PersonalitySelector() {
 }
 
 const labelStyle: React.CSSProperties = {
-  fontSize: '9px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#444',
+  fontSize: '9px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#888',
   display: 'block', marginBottom: 10, fontWeight: 800, fontFamily: 'monospace'
 }
