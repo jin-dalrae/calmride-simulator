@@ -4,6 +4,7 @@ import { ToneSliders } from '../controls/ToneSliders'
 import { PersonalitySelector } from '../controls/PersonalitySelector'
 import { RegenerateButton } from '../controls/RegenerateButton'
 import { DataAccumulator } from '../timeline/DataAccumulator'
+import { RawDataStream } from '../timeline/RawDataStream'
 
 export function Sidebar() {
   return (
@@ -38,8 +39,12 @@ export function Sidebar() {
 
       <RegenerateButton />
 
-      <div style={{ borderTop: '1px solid #1f2937', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <div style={{ borderTop: '1px solid #1f2937', minHeight: 180, flex: '0 0 auto' }}>
         <DataAccumulator />
+      </div>
+
+      <div style={{ borderTop: '1px solid #1f2937', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 250 }}>
+        <RawDataStream />
       </div>
     </div>
   )

@@ -265,8 +265,16 @@ def _load_waymax_scenarios() -> None:
         return
 
     try:
+        import glob
+        pattern = f"{WOMD_DATA_DIR}/*.tfrecord*"
+        files = glob.glob(pattern)
+        logger.info(f"🔍 Found {len(files)} tfrecord files in {WOMD_DATA_DIR}: {files}")
+        
+        # Use first file directly if exactly one found, otherwise fallback to glob
+        target_path = files[0] if len(files) == 1 else pattern
+        
         wod_config = waymax_config.DatasetConfig(
-            path=str(WOMD_DATA_DIR / "*.tfrecord*"),
+            path=target_path,
             max_num_objects=MAX_AGENTS_PER_SCENARIO,
         )
         scenarios = waymax_dataloader.simulator_state_generator(wod_config)
